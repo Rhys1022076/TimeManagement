@@ -41,17 +41,26 @@ public class DragTarget : MonoBehaviour
 			if (!body)
 				return;
 
-			// Add a target joint to the Rigidbody2D GameObject.
-			m_TargetJoint = body.gameObject.AddComponent<TargetJoint2D>();
-			m_TargetJoint.dampingRatio = m_Damping;
-			m_TargetJoint.frequency = m_Frequency;
+			// Add a target joint to the Rigidbody2D GameObject if there is not one already.
+			if (!GetComponent<TargetJoint2D>())
+			{
+				m_TargetJoint = body.gameObject.AddComponent<TargetJoint2D>();
+				m_TargetJoint.dampingRatio = m_Damping;
+				m_TargetJoint.frequency = m_Frequency;
 
-			// Attach the anchor to the local-point where we clicked.
-			m_TargetJoint.anchor = m_TargetJoint.transform.InverseTransformPoint(worldPos);
+				// Attach the anchor to the local-point where we clicked.
+				m_TargetJoint.anchor = m_TargetJoint.transform.InverseTransformPoint(worldPos);
+			}
 		}
-		else if (Input.GetMouseButtonUp(0))
+		 
+		if (Input.GetMouseButtonUp(0))
 		{
-			Destroy(m_TargetJoint);
+			//Add all TargetJoint2D components to an array and remove.
+			TargetJoint2D[] joints = GetComponents<TargetJoint2D>();
+			foreach(TargetJoint2D tj in joints)
+            {
+				Destroy(tj);
+            }
 			m_TargetJoint = null;
 			return;
 		}
