@@ -7,14 +7,16 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    float startTime = 30f;
-    float currentTime = 0f;
+    public float startTime = 30f;
+    public float currentTime;
 
     public Image timer;
     public TextMeshProUGUI timerText;
+
+    private bool ended = false;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         currentTime = startTime;
     }
@@ -27,10 +29,18 @@ public class Timer : MonoBehaviour
         timerText.SetText(currentTime.ToString("0"));
         //print(currentTime);
 
-        if(currentTime <= 0)
-        {
+        if (currentTime <= 0)
+		{
             currentTime = 0f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        
+        if(!ended && currentTime <= 0)
+        {
+            print("end");
+            ended = true;
+            FindObjectOfType<UIManager>().StartEnd();
+            FindObjectOfType<SpawnTasks>().SpawnStop();
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

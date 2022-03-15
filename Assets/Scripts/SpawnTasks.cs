@@ -26,9 +26,14 @@ public class SpawnTasks : MonoBehaviour
         StartCoroutine(Spawn());
     }
 
+    public void SpawnStop()
+	{
+        StopAllCoroutines();
+	}
+
     void Update()
     {
-        if (Time.timeSinceLevelLoad >= 30f)
+        if (Time.timeSinceLevelLoad >= 27f)
         {
             StopAllCoroutines();
         }
